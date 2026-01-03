@@ -1,41 +1,42 @@
 # cbam
 
-databaseChangeLog:
-  - changeSet:
-      id: cbam-mvp-schema
-      author: Enkodia Spring
-      changes:
-        - createTable:
-            tableName: company
-            remarks: |
-              Legal entity participating in CBAM reporting.
-              Examples:
-              - legal_name: "ACME Steel Sp. z o.o."
-              - registration_number: "KRS 0000123456"
-              - country_code: "PL"
-              - type: IMPORTER | EXPORTER | SUPPLIER | AUDITOR
-            columns:
-              - column:
-                  name: id
-                  type: UUID
-                  constraints:
-                    primaryKey: true
-              - column:
-                  name: legal_name
-                  type: VARCHAR(255)
-                  remarks: "Official registered legal name of the company."
-              - column:
-                  name: registration_number
-                  type: VARCHAR(100)
-                  remarks: "National business registration number."
-              - column:
-                  name: country_code
-                  type: VARCHAR(10)
-                  remarks: "ISO country code."
-              - column:
-                  name: type
-                  type: VARCHAR(50)
-                  remarks: "Role of the company in CBAM process."
+
+    databaseChangeLog:
+    - changeSet:
+        id: cbam-mvp-schema
+        author: Enkodia Spring
+        changes:
+          - createTable:
+              tableName: company
+              remarks: |
+                Legal entity participating in CBAM reporting.
+                Examples:
+                - legal_name: "ACME Steel Sp. z o.o."
+                - registration_number: "KRS 0000123456"
+                - country_code: "PL"
+                - type: IMPORTER | EXPORTER | SUPPLIER | AUDITOR
+              columns:
+                - column:
+                    name: id
+                    type: UUID
+                    constraints:
+                      primaryKey: true
+                - column:
+                    name: legal_name
+                    type: VARCHAR(255)
+                    remarks: "Official registered legal name of the company."
+                - column:
+                    name: registration_number
+                    type: VARCHAR(100)
+                    remarks: "National business registration number."
+                - column:
+                    name: country_code
+                    type: VARCHAR(10)
+                    remarks: "ISO country code."
+                - column:
+                    name: type
+                    type: VARCHAR(50)
+                    remarks: "Role of the company in CBAM process."
 
         - createTable:
             tableName: application_user
