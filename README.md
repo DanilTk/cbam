@@ -1,4 +1,4 @@
-# cbam
+# Carbon Calculation Model
 
 
     databaseChangeLog:
@@ -825,3 +825,125 @@
                   name: created_by
                   type: VARCHAR(255)
                   remarks: "Actor initiating the event."
+
+        - createTable:
+            tableName: material
+            remarks: |
+              Material inputs consumed by an installation.
+              Used as activity data for Scope 1 / Scope 3.1 calculations.
+              Examples:
+              - Iron ore
+              - Limestone
+              - Scrap steel
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: installation_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_material_installation
+                    referencedTableName: installation
+                    referencedColumnNames: id
+              - column:
+                  name: emission_factor_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_material_emission_factor
+                    referencedTableName: emission_factor
+                    referencedColumnNames: id
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  remarks: "Material name or classification."
+              - column:
+                  name: quantity
+                  type: NUMERIC
+                  remarks: "Consumed material quantity."
+              - column:
+                  name: unit_of_measurement_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_material_uom
+                    referencedTableName: unit_of_measurement
+                    referencedColumnNames: id
+              - column:
+                  name: activity_date
+                  type: DATE
+                  remarks: "Date of material consumption."
+
+        - createTable:
+            tableName: energy
+            remarks: |
+              Energy consumption data per installation.
+              Used for Scope 1 (fuels) and Scope 2 (electricity) calculations.
+              Examples:
+              - Electricity consumption
+              - Natural gas combustion
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: installation_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_energy_installation
+                    referencedTableName: installation
+                    referencedColumnNames: id
+              - column:
+                  name: emission_factor_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_energy_emission_factor
+                    referencedTableName: emission_factor
+                    referencedColumnNames: id
+              - column:
+                  name: energy_type
+                  type: VARCHAR(100)
+                  remarks: "Energy classification (e.g. ELECTRICITY, NATURAL_GAS)."
+              - column:
+                  name: quantity
+                  type: NUMERIC
+                  remarks: "Consumed energy amount."
+              - column:
+                  name: unit_of_measurement_id
+                  type: UUID
+                  constraints:
+                    foreignKeyName: fk_energy_uom
+                    referencedTableName: unit_of_measurement
+                    referencedColumnNames: id
+              - column:
+                  name: activity_date
+                  type: DATE
+                  remarks: "Date of energy consumption."
+
+        - createTable:
+            tableName: jt_declaration_item
+            remarks: |
+              Join table linking transaction items to a carbon declaration snapshot.
+              Enables versioned, auditable declaration composition.
+            columns:
+              - column:
+                  name: transaction_item_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_jt_decl_item_tx_item
+                    referencedTableName: transaction_item
+                    referencedColumnNames: id
+              - column:
+                  name: declaration_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_jt_decl_item_declaration
+                    referencedTableName: carbon_declaration
+                    referencedColumnNames: id
